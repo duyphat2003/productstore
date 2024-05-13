@@ -29,7 +29,7 @@ class _MyHomePageState extends State<HomeUI> with ChangeNotifier{
           products = results;
           for (DocumentSnapshot doc in products.docs)
             {
-              popularProducts.add(Product(doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+              popularProducts.add(Product(0, doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
             }
           popularProductsShow = popularProducts;
         });
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<HomeUI> with ChangeNotifier{
   Widget build(BuildContext context) {
     popularProductsShow = popularProducts;
     final String? nameProduct = ModalRoute.of(context)!.settings.arguments as String?;
-    popularProductsShow = popularProductsShow.where((element) => element.name.contains(nameProduct != null ? nameProduct : '')).toList();
+    popularProductsShow = popularProductsShow.where((element) => element.title.contains(nameProduct != null ? nameProduct : '')).toList();
 
     return Scaffold(
 
@@ -102,10 +102,10 @@ class _MyHomePageState extends State<HomeUI> with ChangeNotifier{
                   final product = popularProductsShow[index];
                   return ListTile(
                     onTap: (){
-                      Navigator.pushNamed(context, '/productdetail', arguments: Product(product.name, product.description, product.category, product.imageUrl, product.price));
+                      Navigator.pushNamed(context, '/productdetail', arguments: Product(0, product.title, product.description, product.category, product.imageUrl, product.price));
                     },
                     leading: Image.network(product.imageUrl),
-                    title: Text(product.name),
+                    title: Text(product.title),
                     subtitle: Text('\$${product.price}'),
                   );
                 },

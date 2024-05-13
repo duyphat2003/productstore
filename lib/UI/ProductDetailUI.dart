@@ -29,13 +29,30 @@ class ProductDetailState extends State<ProductDetailUI> {
         products = results;
         for (DocumentSnapshot doc in products.docs)
         {
-          popularProducts.add(Product(doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+          popularProducts.add(Product(0, doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
         }
         popularProductsShow = popularProducts;
       });
     });
+
+        getListCategory();
     super.initState();
   }
+
+  
+  List<String>? categories;
+  var isLoaded = false;
+
+  getListCategory() async {
+    categories = await connectToDatabase.fetchCategories();
+    if (categories != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+  
+
 
   int _quantity = 1;
 
@@ -44,7 +61,7 @@ class ProductDetailState extends State<ProductDetailUI> {
 
     popularProductsShow = popularProducts;
     final Product product = ModalRoute.of(context)!.settings.arguments as Product;
-    popularProductsShow = popularProductsShow.where((element) => element.category == product.category && element.name != product.name).toList();
+    popularProductsShow = popularProductsShow.where((element) => element.category == product.category && element.title != product.title).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +89,7 @@ class ProductDetailState extends State<ProductDetailUI> {
           Image.network(product.imageUrl),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(product.name),
+            child: Text(product.title),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -117,13 +134,13 @@ class ProductDetailState extends State<ProductDetailUI> {
                     final relatedProduct = popularProductsShow[index];
                     return GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/productdetail', arguments: Product(relatedProduct.name, relatedProduct.description, relatedProduct.category, relatedProduct.imageUrl, relatedProduct.price));
+                        Navigator.pushNamed(context, '/productdetail', arguments: Product(0, relatedProduct.title, relatedProduct.description, relatedProduct.category, relatedProduct.imageUrl, relatedProduct.price));
 
                       },
                       child: ListTile(
                         leading: Image.network(relatedProduct.imageUrl),
-                        title: Text(relatedProduct.name),
-                        subtitle: Text(relatedProduct.category.toString()),
+                        title: Text(relatedProduct.title),
+                        subtitle: Text(categories![relatedProduct.category - 1]),
                         trailing: Text('\$${relatedProduct.price}'),
                       ),
                     );

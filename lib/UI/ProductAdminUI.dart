@@ -27,7 +27,7 @@ class ProductAdminUIState extends State<ProductAdminUI> {
         products = results;
         for (DocumentSnapshot doc in products.docs)
         {
-          popularProducts.add(Product(doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+          popularProducts.add(Product(0, doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
         }
       });
     });
@@ -45,7 +45,7 @@ class ProductAdminUIState extends State<ProductAdminUI> {
           itemCount: popularProducts.length, // Replace 3 with the number of products in your list
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('${popularProducts[index].name}'),
+              title: Text('${popularProducts[index].title}'),
               subtitle: Text('\$${popularProducts[index].price}'), // Replace with the actual price of the product
               leading: Image.network('${popularProducts[index].imageUrl}'), // Replace with the actual image url of the product
               trailing: Row(
@@ -54,7 +54,7 @@ class ProductAdminUIState extends State<ProductAdminUI> {
                   IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/editproductadmin', arguments: Product(popularProducts[index].name, popularProducts[index].description, popularProducts[index].category, popularProducts[index].imageUrl, popularProducts[index].price));
+                      Navigator.pushNamed(context, '/editproductadmin', arguments: Product(0, popularProducts[index].title, popularProducts[index].description, popularProducts[index].category, popularProducts[index].imageUrl, popularProducts[index].price));
                     },
                   ),
                   IconButton(
@@ -95,7 +95,7 @@ class ProductAdminUIState extends State<ProductAdminUI> {
               child: Text('Delete'),
               onPressed: () {
                 setState(() {
-                  connectToDatabase.Delete('PRODUCT', 'name', popularProducts[index].name);
+                  connectToDatabase.Delete('PRODUCT', 'name', popularProducts[index].title);
                   popularProducts.removeAt(index);
                   Navigator.of(context).pop();
                 });

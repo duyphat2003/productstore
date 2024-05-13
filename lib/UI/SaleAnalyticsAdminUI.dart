@@ -46,7 +46,7 @@ class SaleAnalyticsAdminUIState extends State<SaleAnalyticsAdminUI> {
           productsSnapshot = results;
           for (DocumentSnapshot doc in productsSnapshot.docs)
           {
-            products.add(Product(doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+            products.add(Product(0, doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
           }
         });
       });

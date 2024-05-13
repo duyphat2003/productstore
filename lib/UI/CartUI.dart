@@ -33,7 +33,7 @@ class _CartPageState extends State<CartUI> {
 
 
       if (item != null) {
-        Singleton.instance.AddCartItem(CartItem(item.product.name,
+        Singleton.instance.AddCartItem(CartItem(item.product.title,
             item.product.price,
             item.amount,
             item.product.imageUrl,

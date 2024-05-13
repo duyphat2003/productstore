@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:productstore/UI/CategoryUI.dart';
 
 import '../Database/ConnectToDatabase.dart';
 import '../Entity/Product.dart';
@@ -23,37 +24,47 @@ class _AddProductPageState extends State<AddProductUI> {
   ConnectToDatabase connectToDatabase = ConnectToDatabase();
   late QuerySnapshot products;
 
-
   @override
-  void initState()
-  {
+  void initState() {
     popularProducts = [];
     connectToDatabase.Read('PRODUCT').then((results) {
       setState(() {
         products = results;
-        for (DocumentSnapshot doc in products.docs)
-        {
-          popularProducts.add(Product(doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+        for (DocumentSnapshot doc in products.docs) {
+          popularProducts.add(Product(
+              0,
+              doc.get('name'),
+              doc.get('description'),
+              doc.get('category'),
+              doc.get('imageUrl'),
+              doc.get('price')));
         }
       });
     });
+
+    getListCategory();
     super.initState();
   }
 
-  static const List<String> categories = [
-    'Electronics',
-    'Fashion',
-    'Home & Garden',
-    'Sports & Outdoors',
-    'Health & Beauty',
-  ];
+  
+  List<String>? categories;
+  var isLoaded = false;
+
+  getListCategory() async {
+    categories = await connectToDatabase.fetchCategories();
+    if (categories != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.orange,
-          title: const Text('Add Product')
-      ),
+          backgroundColor: Colors.orange, title: const Text('Add Product')),
       body: Form(
         key: _formKey,
         child: Column(
@@ -64,8 +75,11 @@ class _AddProductPageState extends State<AddProductUI> {
                 if (value!.isEmpty) {
                   return 'Please enter a product name';
                 }
-                if(popularProducts.where((product) => product.name.toLowerCase() == value.toString().toLowerCase()).isNotEmpty)
-                {
+                if (popularProducts
+                    .where((product) =>
+                        product.title.toLowerCase() ==
+                        value.toString().toLowerCase())
+                    .isNotEmpty) {
                   return 'This product name is already existed';
                 }
                 return null;
@@ -75,7 +89,8 @@ class _AddProductPageState extends State<AddProductUI> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(labelText: 'Product Description'),
+              decoration:
+                  const InputDecoration(labelText: 'Product Description'),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter a product description';
@@ -86,31 +101,29 @@ class _AddProductPageState extends State<AddProductUI> {
                 _productDescription = value;
               },
             ),
-
             Container(
               color: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 children: [
-                  const Text('Gender', style: TextStyle(color: Colors.black)),
+                  const Text('Category', style: TextStyle(color: Colors.black)),
                   const SizedBox(width: 10),
                   DropdownMenu<String>(
-                    initialSelection:  categories.first,
+                    initialSelection: categories?.first,
                     onSelected: (String? value) {
                       // This is called when the user selects an item.
                       setState(() {
-                        _producCategory = categories.indexOf(value!);
+                        _producCategory =  categories!.indexOf(value!);
                       });
                     },
-                    dropdownMenuEntries: categories.map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(value: value, label: value);
+                    dropdownMenuEntries: categories!.map<DropdownMenuEntry<String>>((String value) {
+                      return DropdownMenuEntry<String>(
+                          value: value, label: value);
                     }).toList(),
                   ),
                 ],
               ),
             ),
-
-
             TextFormField(
               decoration: const InputDecoration(labelText: 'Product Price'),
               keyboardType: TextInputType.number,

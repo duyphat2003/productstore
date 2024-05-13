@@ -25,20 +25,32 @@ class _ProductPageState extends State<EditProductUI> {
   late String _productDescription = '';
   late String _productImageLink = '';
 
-  static const List<String> categories = [
-    'Electronics',
-    'Fashion',
-    'Home & Garden',
-    'Sports & Outdoors',
-    'Health & Beauty',
-  ];
+  List<String>? categories;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    connectToDatabase = ConnectToDatabase();
+    getListCategory();
+  }
+
+  getListCategory() async {
+    categories = await connectToDatabase.fetchCategories();
+    if (categories != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+  
 
   @override
   Widget build(BuildContext context) {
     final Product product = ModalRoute.of(context)!.settings.arguments as Product;
 
-    _nameController.text = product.name;
-    _typeController.text = categories[product.category];
+    _nameController.text = product.title;
+    _typeController.text = categories![product.category];
     _priceController.text = product.price.toString();
     _descriptionController.text = product.description;
     _imageLinkController.text = product.imageUrl;
@@ -68,13 +80,13 @@ class _ProductPageState extends State<EditProductUI> {
                     onSelected: (String? value) {
                       // This is called when the user selects an item.
                       setState(() {
-                        product.category = categories.indexWhere((element) => element == value);
+                        product.category = categories!.indexWhere((element) => element == value);
 
                         print('_productType ' + product.category.toString());
 
                       });
                     },
-                    dropdownMenuEntries: categories.map<DropdownMenuEntry<String>>((String value) {
+                    dropdownMenuEntries: categories!.map<DropdownMenuEntry<String>>((String value) {
                       return DropdownMenuEntry<String>(value: value, label: value);
                     }).toList(),
                   ),
@@ -117,7 +129,7 @@ class _ProductPageState extends State<EditProductUI> {
                 };
 
 
-                connectToDatabase.Update(map, 'PRODUCT', 'name', product.name);
+                connectToDatabase.Update(map, 'PRODUCT', 'name', product.title);
                 Navigator.pop(context);
 
               },

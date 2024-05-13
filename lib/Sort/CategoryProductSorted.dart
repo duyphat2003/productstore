@@ -13,7 +13,7 @@ class CategoryProductSorted extends ChangeNotifier {
     switch(sortIndex)
     {
       case 'Sort by A-Z':
-        products.sort((a, b) => a.name.compareTo(b.name));
+        products.sort((a, b) => a.title.compareTo(b.title));
         break;
 
       case 'Sort by Z-A':

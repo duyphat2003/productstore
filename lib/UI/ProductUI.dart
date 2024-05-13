@@ -29,14 +29,13 @@ class _ProductListPageState extends State<ProductUI> {
         products = results;
         for (DocumentSnapshot doc in products.docs)
         {
-          popularProducts.add(Product(doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+          popularProducts.add(Product(0, doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
         }
         popularProductsShow = popularProducts;
       });
     });
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,7 @@ class _ProductListPageState extends State<ProductUI> {
     switch(sortIndex)
     {
       case '1':
-        popularProductsShow.sort((a, b) => a.name.compareTo(b.name));
+        popularProductsShow.sort((a, b) => a.title.compareTo(b.title));
         break;
 
       case '2':
@@ -143,10 +142,10 @@ class _ProductListPageState extends State<ProductUI> {
               itemBuilder: (context, index) {
                 return ListTile(
                   onTap: (){
-                    Navigator.pushNamed(context, '/productdetail', arguments: Product(popularProductsShow[index].name, popularProductsShow[index].description, popularProductsShow[index].category, popularProductsShow[index].imageUrl, popularProductsShow[index].price));
+                    Navigator.pushNamed(context, '/productdetail', arguments: Product(0, popularProductsShow[index].title, popularProductsShow[index].description, popularProductsShow[index].category, popularProductsShow[index].imageUrl, popularProductsShow[index].price));
                   },
                   leading: Image.network(popularProductsShow[index].imageUrl),
-                  title: Text('${popularProductsShow[index].name}'),
+                  title: Text('${popularProductsShow[index].title}'),
                   subtitle: Text('${popularProductsShow[index].description}'),
                   trailing: Text('\$${popularProductsShow[index].price}'),
                 );

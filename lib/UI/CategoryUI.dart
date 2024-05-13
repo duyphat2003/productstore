@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:productstore/Database/ConnectToDatabase.dart';
+import 'dart:developer';
 import '../Sort/CategoryProductSorted.dart';
 
 class CategoryUI extends StatefulWidget {
@@ -10,13 +11,34 @@ class CategoryUI extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryUI> {
-  final List<String> _categories = [
-    'Electronics',
-    'Fashion',
-    'Home & Garden',
-    'Sports & Outdoors',
-    'Health & Beauty',
+  late ConnectToDatabase connectToDatabase;
+
+  late List<String> _categoriesImage = [
+    'https://cdn-icons-png.freepik.com/512/3696/3696504.png',
+    'https://cdn0.iconfinder.com/data/icons/fashion-and-clothes-accessories-icons/64/Clothes_NECKLACE-512.png',
+    'https://cdn-icons-png.flaticon.com/512/6909/6909544.png',
+    'https://cdn-icons-png.flaticon.com/512/3534/3534312.png'
   ];
+
+  List<String>? categories;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    connectToDatabase = ConnectToDatabase();
+    getListCategory();
+  }
+
+  getListCategory() async {
+    categories = await connectToDatabase.fetchCategories();
+    if (categories != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +49,7 @@ class _CategoryPageState extends State<CategoryUI> {
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: _categories.length,
+        itemCount: categories?.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.8,
@@ -35,10 +57,11 @@ class _CategoryPageState extends State<CategoryUI> {
           crossAxisSpacing: 16,
         ),
         itemBuilder: (context, index) {
-          final category = _categories[index];
+          String category = categories![index];
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/product', arguments:  CategoryProductSorted(index + 1, '1'));
+              Navigator.pushNamed(context, '/product',
+                  arguments: CategoryProductSorted(index + 1, '1'));
             },
             child: Container(
               decoration: BoxDecoration(
@@ -50,7 +73,7 @@ class _CategoryPageState extends State<CategoryUI> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Image.network(category),
+                    child: Image.network(_categoriesImage[index]),
                   ),
                   const SizedBox(height: 8),
                   Text(
