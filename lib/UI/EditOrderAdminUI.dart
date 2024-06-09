@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:productstore/Database/ConnectToDatabase.dart';
+import 'package:productstore/Database/connecttodatabase.dart';
 
 import '../Entity/CartItem.dart';
-import '../Entity/Order.dart';
+import '../Entity/order.dart';
 
 class EditOrderAdminUI extends StatefulWidget {
   const EditOrderAdminUI({super.key});

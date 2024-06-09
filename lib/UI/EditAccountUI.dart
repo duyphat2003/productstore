@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../Database/ConnectToDatabase.dart';
-import '../Entity/Account.dart';
+import '../Database/connecttodatabase.dart';
+import '../Entity/account.dart';
 
 class EditAccountUI extends StatefulWidget {
   const EditAccountUI({super.key});

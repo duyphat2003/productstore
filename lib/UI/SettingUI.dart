@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:productstore/Database/ConnectToDatabase.dart';
+import 'package:productstore/Database/connecttodatabase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Entity/Account.dart';
+import '../Entity/account.dart';
 import 'MyApp.dart';
 
 class SettingsUI extends StatefulWidget {

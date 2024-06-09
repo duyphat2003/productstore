@@ -3,8 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:productstore/Database/ConnectToDatabase.dart';
-import 'package:productstore/Entity/Account.dart';
+import 'package:productstore/Database/connecttodatabase.dart';
+import 'package:productstore/Entity/account.dart';
 
 
 class RegistrationUI extends StatefulWidget {

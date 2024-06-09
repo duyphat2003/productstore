@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:productstore/Entity/Account.dart';
+import 'package:productstore/Entity/account.dart';
 
-import '../Database/ConnectToDatabase.dart';
+import '../Database/connecttodatabase.dart';
 
 class AccountAdminUI extends StatefulWidget {
   const AccountAdminUI({super.key});

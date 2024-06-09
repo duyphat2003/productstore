@@ -3,8 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Database/ConnectToDatabase.dart';
-import '../Entity/Account.dart';
+import '../Database/connecttodatabase.dart';
+import '../Entity/account.dart';
 
 class PasswordResetUI extends StatefulWidget {
   const PasswordResetUI({super.key});

@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Entity/Product.dart';
 import 'package:http/http.dart' as http;
 
 class ConnectToDatabase {
@@ -47,9 +46,12 @@ class ConnectToDatabase {
       }
     }
   }
-  List<String> categoriesFromJson(String str) => List<String>.from(json.decode(str).map((x) => x));
 
-  String categoriesToJson(List<String> data) => json.encode(List<dynamic>.from(data.map((x) => x)));
+  List<String> categoriesFromJson(String str) =>
+      List<String>.from(json.decode(str).map((x) => x));
+
+  String categoriesToJson(List<String> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x)));
 
   Future<List<String>?> fetchCategories() async {
     final httpClient = http.Client();
@@ -63,5 +65,4 @@ class ConnectToDatabase {
       throw Exception('Failed to load categories: ${response.statusCode}');
     }
   }
-
 }

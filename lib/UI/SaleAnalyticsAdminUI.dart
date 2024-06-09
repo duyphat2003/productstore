@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
-import 'package:productstore/Database/ConnectToDatabase.dart';
+import 'package:productstore/Database/connecttodatabase.dart';
 
-import '../Entity/Account.dart';
+import '../Entity/account.dart';
 import '../Entity/CartItem.dart';
-import '../Entity/Order.dart';
+import '../Entity/order.dart';
 import '../Entity/Product.dart';
 
 class SaleAnalyticsAdminUI extends StatefulWidget {

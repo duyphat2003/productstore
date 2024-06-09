@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:productstore/Database/ConnectToDatabase.dart';
-import 'package:productstore/Entity/Account.dart';
+import 'package:productstore/Database/connecttodatabase.dart';
+import 'package:productstore/Entity/account.dart';
 import 'package:productstore/UI/MyApp.dart';
 
 class ProfileUI extends StatefulWidget {

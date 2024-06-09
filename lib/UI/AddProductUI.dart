@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:productstore/UI/CategoryUI.dart';
+import 'package:productstore/ui/CategoryUI.dart';
 
-import '../Database/ConnectToDatabase.dart';
-import '../Entity/Product.dart';
+import '../Database/connecttodatabase.dart';
+import '../Entity/product.dart';
 
 class AddProductUI extends StatefulWidget {
   const AddProductUI({super.key});

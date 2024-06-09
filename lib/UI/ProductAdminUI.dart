@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../Database/ConnectToDatabase.dart';
+import '../Database/connecttodatabase.dart';
 import '../Entity/Product.dart';
 
 class ProductAdminUI extends StatefulWidget {

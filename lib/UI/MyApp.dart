@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:productstore/Entity/Account.dart';
+import 'package:productstore/Entity/account.dart';
 import 'package:productstore/UI/AccountAdminUI.dart';
 import 'package:productstore/UI/AddProductUI.dart';
 import 'package:productstore/UI/EditOrderAdminUI.dart';
@@ -12,7 +12,7 @@ import 'package:productstore/UI/OrderListAdminUI.dart';
 import '../Entity/CartItem.dart';
 import '../Entity/Product.dart';
 import 'AdminUI.dart';
-import 'CartUI.dart';
+import 'cartui.dart';
 import 'CategoryUI.dart';
 import 'EditAccountUI.dart';
 import 'EditProductUI.dart';

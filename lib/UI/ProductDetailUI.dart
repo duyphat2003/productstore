@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:productstore/view_model/productmodel.dart';
 
-import '../Database/ConnectToDatabase.dart';
+import '../Database/connecttodatabase.dart';
 import '../Entity/Product.dart';
 
 class ProductDetailUI extends StatefulWidget {
@@ -18,28 +19,32 @@ class ProductDetailState extends State<ProductDetailUI> {
   ConnectToDatabase connectToDatabase = ConnectToDatabase();
   late QuerySnapshot products;
 
-
+  final ProductModel productModel = ProductModel();
   @override
-  void initState()
-  {
+  void initState() {
     popularProducts = [];
     popularProductsShow = [];
     connectToDatabase.Read('PRODUCT').then((results) {
       setState(() {
         products = results;
-        for (DocumentSnapshot doc in products.docs)
-        {
-          popularProducts.add(Product(0, doc.get('name'), doc.get('description'), doc.get('category'), doc.get('imageUrl'), doc.get('price')));
+        for (DocumentSnapshot doc in products.docs) {
+          popularProducts.add(Product(
+              0,
+              doc.get('name'),
+              doc.get('description'),
+              doc.get('category'),
+              doc.get('imageUrl'),
+              doc.get('price')));
         }
         popularProductsShow = popularProducts;
       });
     });
 
-        getListCategory();
+    getListCategory();
     super.initState();
+    productModel.fetchProductList();
   }
 
-  
   List<String>? categories;
   var isLoaded = false;
 
@@ -51,17 +56,19 @@ class ProductDetailState extends State<ProductDetailUI> {
       });
     }
   }
-  
-
 
   int _quantity = 1;
 
   @override
   Widget build(BuildContext context) {
-
     popularProductsShow = popularProducts;
-    final Product product = ModalRoute.of(context)!.settings.arguments as Product;
-    popularProductsShow = popularProductsShow.where((element) => element.category == product.category && element.title != product.title).toList();
+    final Product product =
+        ModalRoute.of(context)!.settings.arguments as Product;
+    popularProductsShow = popularProductsShow
+        .where((element) =>
+            element.category == product.category &&
+            element.title != product.title)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -72,20 +79,18 @@ class ProductDetailState extends State<ProductDetailUI> {
             icon: const Icon(Icons.home),
             onPressed: () {
               Navigator.pushNamed(context, '/home');
-              },
+            },
           ),
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               Navigator.pushNamed(context, '/cart', arguments: product);
-              },
+            },
           ),
         ],
       ),
       body: Column(
-
         children: [
-
           Image.network(product.imageUrl),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -115,50 +120,48 @@ class ProductDetailState extends State<ProductDetailUI> {
               ),
             ],
           ),
-
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/cart', arguments: CartItemOrder(product, _quantity));
-              },
+              Navigator.pushNamed(context, '/cart',
+                  arguments: CartItemOrder(product, _quantity));
+            },
             child: const Text('Buy'),
-
           ),
-
           Text(product.description),
-
-            Expanded(
-
-                child: ListView.builder(
-                  itemCount: popularProductsShow.length,
-                  itemBuilder: (context, index) {
-                    final relatedProduct = popularProductsShow[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/productdetail', arguments: Product(0, relatedProduct.title, relatedProduct.description, relatedProduct.category, relatedProduct.imageUrl, relatedProduct.price));
-
-                      },
-                      child: ListTile(
-                        leading: Image.network(relatedProduct.imageUrl),
-                        title: Text(relatedProduct.title),
-                        subtitle: Text(categories![relatedProduct.category - 1]),
-                        trailing: Text('\$${relatedProduct.price}'),
-                      ),
-                    );
-                  },
-                )
-
-            ),
-
+          Expanded(
+              child: ListView.builder(
+            itemCount: popularProductsShow.length,
+            itemBuilder: (context, index) {
+              final relatedProduct = popularProductsShow[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/productdetail',
+                      arguments: Product(
+                          0,
+                          relatedProduct.title,
+                          relatedProduct.description,
+                          relatedProduct.category,
+                          relatedProduct.imageUrl,
+                          relatedProduct.price));
+                },
+                child: ListTile(
+                  leading: Image.network(relatedProduct.imageUrl),
+                  title: Text(relatedProduct.title),
+                  subtitle: Text(categories![relatedProduct.category - 1]),
+                  trailing: Text('\$${relatedProduct.price}'),
+                ),
+              );
+            },
+          )),
         ],
       ),
     );
   }
 }
 
-class CartItemOrder
-{
-    final Product product;
-    final int amount;
+class CartItemOrder {
+  final Product product;
+  final int amount;
 
   CartItemOrder(this.product, this.amount);
 }

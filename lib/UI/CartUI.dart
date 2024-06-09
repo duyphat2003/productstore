@@ -6,8 +6,6 @@ import 'package:productstore/UI/MyApp.dart';
 import 'package:productstore/UI/ProductDetailUI.dart';
 
 import '../Entity/CartItem.dart';
-import '../Entity/Order.dart';
-import '../Entity/Product.dart';
 
 class CartUI extends StatefulWidget {
   const CartUI({super.key});
@@ -17,33 +15,29 @@ class CartUI extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartUI> {
-
   ConnectToDatabase connectToDatabase = ConnectToDatabase();
   late QuerySnapshot orderQS;
   late bool isGet = false;
 
   @override
   Widget build(BuildContext context) {
-    if(!isGet) {
-      final CartItemOrder? item = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as CartItemOrder?;
-
-
+    if (!isGet) {
+      final CartItemOrder? item =
+          ModalRoute.of(context)!.settings.arguments as CartItemOrder?;
 
       if (item != null) {
-        Singleton.instance.AddCartItem(CartItem(item.product.title,
+        Singleton.instance.AddCartItem(CartItem(
+            item.product.title,
             item.product.price,
             item.amount,
             item.product.imageUrl,
-            Singleton.account.account, ''));
+            Singleton.account.account,
+            ''));
 
         Singleton.instance.AddProduct(item.product);
         isGet = true;
       }
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +50,6 @@ class _CartPageState extends State<CartUI> {
               Navigator.pushNamed(context, '/home');
             },
           ),
-
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
@@ -70,12 +63,14 @@ class _CartPageState extends State<CartUI> {
         itemBuilder: (context, index) {
           final cartItem = Singleton.instance.cartItem[index];
           return ListTile(
-            onTap: (){
-              Navigator.pushNamed(context, '/productdetail', arguments: Singleton.instance.products[index]);
+            onTap: () {
+              Navigator.pushNamed(context, '/productdetail',
+                  arguments: Singleton.instance.products[index]);
             },
             leading: Image.network(cartItem.imageUrl),
             title: Text(cartItem.productName),
-            subtitle: Text('${cartItem.price} | Amount: ${cartItem.quantity} x'),
+            subtitle:
+                Text('${cartItem.price} | Amount: ${cartItem.quantity} x'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -89,7 +84,6 @@ class _CartPageState extends State<CartUI> {
                     });
                   },
                 ),
-
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
@@ -100,13 +94,13 @@ class _CartPageState extends State<CartUI> {
                     });
                   },
                 ),
-
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () {
                     setState(() {
                       Singleton.instance.removeCartItem(cartItem);
-                      Singleton.instance.removeProduct(Singleton.instance.products[index]);
+                      Singleton.instance
+                          .removeProduct(Singleton.instance.products[index]);
                     });
                   },
                 ),
@@ -130,26 +124,25 @@ class _CartPageState extends State<CartUI> {
                   connectToDatabase.Read('ORDER').then((results) {
                     setState(() {
                       orderQS = results;
-                      for (DocumentSnapshot doc in orderQS.docs)
-                      {
+                      for (DocumentSnapshot doc in orderQS.docs) {
                         int i = int.parse(doc.get('orderNumber'));
-                        if(index <= i)
-                        {
+                        if (index <= i) {
                           index = i + 1;
                         }
                       }
 
                       Map<String, dynamic> map = {
-                        'orderNumber' : index.toString(),
-                        'orderDate' : DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        'deliveryDate' : '',
-                        'orderStatus' : 'Pending',
-                        'account' : Singleton.account.account,
+                        'orderNumber': index.toString(),
+                        'orderDate':
+                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        'deliveryDate': '',
+                        'orderStatus': 'Pending',
+                        'account': Singleton.account.account,
                       };
 
                       connectToDatabase.Insert(map, 'ORDER');
 
-                      for(CartItem item in Singleton.instance.cartItem) {
+                      for (CartItem item in Singleton.instance.cartItem) {
                         Map<String, dynamic> data = {
                           'productName': item.productName,
                           'price': item.price,
@@ -165,7 +158,6 @@ class _CartPageState extends State<CartUI> {
                       Navigator.pushNamed(context, '/home');
                     });
                   });
-
                 });
               },
               child: const Text('Buy'),

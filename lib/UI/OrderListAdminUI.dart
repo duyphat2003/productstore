@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../Database/ConnectToDatabase.dart';
+import '../Database/connecttodatabase.dart';
 import '../Entity/CartItem.dart';
-import '../Entity/Order.dart';
+import '../Entity/order.dart';
 
 class OrderListAdminUI extends StatefulWidget {
   const OrderListAdminUI({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:productstore/Database/ConnectToDatabase.dart';
+import 'package:productstore/Database/connecttodatabase.dart';
 import 'dart:developer';
-import '../Sort/CategoryProductSorted.dart';
+import '../Sort/categoryproductsorted.dart';
 
 class CategoryUI extends StatefulWidget {
   const CategoryUI({super.key});
